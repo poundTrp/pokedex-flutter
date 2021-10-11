@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColor {
   static const Color appThemeColor = Colors.blue;
   static const Color transparent = Colors.transparent;
+  static const Color customBarColor = Colors.grey;
   static const Color textColor = Colors.black87;
   static const Color white = Colors.white;
   static const Color indicatorColor = Colors.lightGreen;

@@ -10,6 +10,24 @@ class ListItem extends StatelessWidget {
 
   ListItem(this.pokemonList, this.navigator, this.scrollController);
 
+  Widget _customBar(BuildContext context) {
+    return FractionallySizedBox(
+      widthFactor: 0.15,
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          vertical: 16.0,
+        ),
+        child: Container(
+          height: 4.0,
+          decoration: BoxDecoration(
+            color: AppColor.customBarColor,
+            borderRadius: const BorderRadius.all(Radius.circular(2.5)),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _renderItem(BuildContext context, NamedAPIResource item) {
     String title = capitalFirstLetter(item.name);
 
@@ -32,8 +50,11 @@ class ListItem extends StatelessWidget {
                       topRight: new Radius.circular(20.0),
                     ),
                   ),
-                  child: Center(
-                    child: Text('This is modal sheet :3'),
+                  child: Column(
+                    children: [
+                      _customBar(context),
+                      Text('This is modal sheet :3'),
+                    ],
                   ),
                 ),
               );
