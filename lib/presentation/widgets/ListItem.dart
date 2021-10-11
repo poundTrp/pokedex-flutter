@@ -19,7 +19,25 @@ class ListItem extends StatelessWidget {
           primary: AppColor.white,
           padding: EdgeInsets.all(16)),
       onPressed: () {
-        // TODO: Show modal here
+        showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Container(
+                color: Colors.transparent,
+                child: Container(
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: new BorderRadius.only(
+                      topLeft: new Radius.circular(20.0),
+                      topRight: new Radius.circular(20.0),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text('This is modal sheet :3'),
+                  ),
+                ),
+              );
+            });
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

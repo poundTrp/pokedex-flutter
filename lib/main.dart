@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pokedex app',
       theme: ThemeData(
-        canvasColor: AppColor.white,
+        canvasColor: AppColor.transparent,
         primarySwatch: Colors.blue,
       ),
       home: PokedexScreen(),
