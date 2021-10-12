@@ -5,10 +5,9 @@ import 'package:pokedex_flutter/utils/textFormatter.dart';
 
 class ListItem extends StatelessWidget {
   final List<NamedAPIResource> pokemonList;
-  final Function(String title, String url) navigator;
   final ScrollController scrollController;
 
-  ListItem(this.pokemonList, this.navigator, this.scrollController);
+  ListItem(this.pokemonList, this.scrollController);
 
   Widget _customBar(BuildContext context) {
     return FractionallySizedBox(
@@ -53,7 +52,19 @@ class ListItem extends StatelessWidget {
                   child: Column(
                     children: [
                       _customBar(context),
-                      Text('This is modal sheet :3'),
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: AppFontSize.title,
+                        ),
+                      ),
+                      Text('This is ${item.url}'),
+                      Row(
+                        children: [
+                          Text('Weight: 10'),
+                          Text('Height: 10'),
+                        ],
+                      )
                     ],
                   ),
                 ),
