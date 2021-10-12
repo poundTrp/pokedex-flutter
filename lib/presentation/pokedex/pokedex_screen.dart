@@ -15,7 +15,6 @@ class PokedexScreen extends StatefulWidget {
 
 class _PokedexScreenState extends State<PokedexScreen> {
   late PokedexBloc _bloc;
-
   late String _queryType;
   late String _nextPage;
   late List<NamedAPIResource> _data;
@@ -33,8 +32,6 @@ class _PokedexScreenState extends State<PokedexScreen> {
     return _bloc.fetchPokedex(_queryType, _nextPage, _lazyLoadHandler);
   }
 
-  void _navigationHandler(String title, String url) {}
-
   Widget _renderBody() {
     return RefreshIndicator(
       child: StreamBuilder<ApiResponse<PokedexModel>>(
@@ -43,15 +40,16 @@ class _PokedexScreenState extends State<PokedexScreen> {
           if (snapshot.hasData) {
             switch (snapshot.data!.status) {
               case Status.LOADING:
-              // TODO: Handle Loading
+                // TODO: Handle Loading
+                break;
               case Status.COMPLETED:
                 return ListItem(
                   _data,
-                  _navigationHandler,
                   scrollController,
                 );
               case Status.ERROR:
-              //TODO: Handle Error
+                //TODO: Handle Error
+                break;
             }
           }
           return Center(
