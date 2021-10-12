@@ -32,6 +32,62 @@ class _PokedexScreenState extends State<PokedexScreen> {
     return _bloc.fetchPokedex(_queryType, _nextPage, _lazyLoadHandler);
   }
 
+  Widget _customBar(BuildContext context) {
+    return FractionallySizedBox(
+      widthFactor: 0.15,
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          vertical: 16.0,
+        ),
+        child: Container(
+          height: 4.0,
+          decoration: BoxDecoration(
+            color: AppColor.customBarColor,
+            borderRadius: const BorderRadius.all(Radius.circular(2.5)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void onPressPokemon(String title, String url) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            color: Colors.transparent,
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                  topLeft: new Radius.circular(20.0),
+                  topRight: new Radius.circular(20.0),
+                ),
+              ),
+              child: Column(
+                children: [
+                  _customBar(context),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: AppFontSize.title,
+                    ),
+                  ),
+                  Text('This is $url'),
+                  Row(
+                    children: [
+                      Text('Weight: 10'),
+                      Text('Height: 10'),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+    ;
+  }
+
   Widget _renderBody() {
     return RefreshIndicator(
       child: StreamBuilder<ApiResponse<PokedexModel>>(
@@ -43,10 +99,15 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 // TODO: Handle Loading
                 break;
               case Status.COMPLETED:
-                return ListItem(
-                  _data,
-                  scrollController,
-                );
+                return ListView.builder(
+                    itemCount: _data.length,
+                    itemBuilder: (context, index) {
+                      return ListItem(
+                        _data[index],
+                        onPress: () =>
+                            onPressPokemon(_data[index].name, _data[index].url),
+                      );
+                    });
               case Status.ERROR:
                 //TODO: Handle Error
                 break;
@@ -86,6 +147,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
 
     // init bloc
     _bloc = PokedexBloc(_queryType, _nextPage, _lazyLoadHandler);
+    _bloc.fetchPokedex(_queryType, _nextPage, _lazyLoadHandler);
   }
 
   PreferredSizeWidget renderAppBar() {
