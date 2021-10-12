@@ -16,22 +16,31 @@ class PokemonBloc {
   Stream<ApiResponse<PokemonModel>> get pokemonStream =>
       _pokemonController.stream;
 
-  PokemonBloc(String path) {
+  PokemonBloc() {
     _pokemonController = StreamController<ApiResponse<PokemonModel>>();
     _apiProvider = ApiProvider();
   }
 
-  Future<void> fetchPokemon(String path) async {
-    pokemonSink.add(ApiResponse.loading(AppDefaultValue.loadingMessage));
-    try {
-      Map<String, dynamic> items = await _apiProvider.getDataByUrl(path);
+  //TODO: Change back to streamBuilder instead
 
-      PokemonModel pokemon = PokemonModel.fromJson(items);
-      pokemonSink.add(ApiResponse.completed(pokemon));
-    } catch (event) {
-      pokemonSink.add(ApiResponse.error(event.toString()));
-      print(event);
-    }
+  // Future<void> fetchPokemon(String path) async {
+  //   pokemonSink.add(ApiResponse.loading(AppDefaultValue.loadingMessage));
+  //   try {
+  //     Map<String, dynamic> items = await _apiProvider.getDataByUrl(path);
+
+  //     PokemonModel pokemon = PokemonModel.fromJson(items);
+  //     pokemonSink.add(ApiResponse.completed(pokemon));
+  //   } catch (event) {
+  //     pokemonSink.add(ApiResponse.error(event.toString()));
+  //     print(event);
+  //   }
+  // }
+
+  Future<PokemonModel> fetchPokemon(String path) async {
+    Map<String, dynamic> items = await _apiProvider.getDataByUrl(path);
+
+    PokemonModel pokemon = PokemonModel.fromJson(items);
+    return pokemon;
   }
 
   dispose() {
