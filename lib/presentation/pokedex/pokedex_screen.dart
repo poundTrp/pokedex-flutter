@@ -5,8 +5,11 @@ import 'package:pokedex_flutter/constants/defaultValue.dart';
 import 'package:pokedex_flutter/constants/statusCode.dart';
 import 'package:pokedex_flutter/models/common_model.dart';
 import 'package:pokedex_flutter/models/pokedex_model.dart';
+import 'package:pokedex_flutter/models/pokemon_model.dart';
 import 'package:pokedex_flutter/presentation/pokedex/pokedex_bloc.dart';
-import 'package:pokedex_flutter/presentation/widgets/ListItem.dart';
+import 'package:pokedex_flutter/presentation/pokemon/pokemon_bloc.dart';
+import 'package:pokedex_flutter/presentation/widgets/list_item.dart';
+import 'package:pokedex_flutter/presentation/widgets/pokemon_detail.dart';
 
 class PokedexScreen extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class PokedexScreen extends StatefulWidget {
 
 class _PokedexScreenState extends State<PokedexScreen> {
   late PokedexBloc _bloc;
+  final PokemonBloc _pokemonBloc = PokemonBloc();
   late String _queryType;
   late String _nextPage;
   late List<NamedAPIResource> _data;
@@ -32,60 +36,29 @@ class _PokedexScreenState extends State<PokedexScreen> {
     return _bloc.fetchPokedex(_queryType, _nextPage, _lazyLoadHandler);
   }
 
-  Widget _customBar(BuildContext context) {
-    return FractionallySizedBox(
-      widthFactor: 0.15,
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          vertical: 16.0,
-        ),
-        child: Container(
-          height: 4.0,
-          decoration: BoxDecoration(
-            color: AppColor.customBarColor,
-            borderRadius: const BorderRadius.all(Radius.circular(2.5)),
-          ),
-        ),
-      ),
-    );
-  }
-
   void onPressPokemon(String title, String url) {
     showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            color: Colors.transparent,
-            child: Container(
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                borderRadius: new BorderRadius.only(
-                  topLeft: new Radius.circular(20.0),
-                  topRight: new Radius.circular(20.0),
-                ),
-              ),
-              child: Column(
-                children: [
-                  _customBar(context),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: AppFontSize.title,
-                    ),
-                  ),
-                  Text('This is $url'),
-                  Row(
-                    children: [
-                      Text('Weight: 10'),
-                      Text('Height: 10'),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-    ;
+      context: context,
+      builder: (context) {
+        return FutureBuilder<PokemonModel>(
+            future: _pokemonBloc.fetchPokemon(url),
+            builder: (context, snapshot) {
+              final pokemon = snapshot.data;
+              if (!snapshot.hasData || pokemon == null) {
+                return Center(
+                  child: Text(AppDefaultValue.dataNotFound),
+                );
+              }
+              return PokemonDetail(
+                title: title,
+                frontSprite: pokemon.sprites.frontDefault,
+                backSprite: pokemon.sprites.backDefault,
+                height: pokemon.height,
+                weight: pokemon.weight,
+              );
+            });
+      },
+    );
   }
 
   Widget _renderBody() {
