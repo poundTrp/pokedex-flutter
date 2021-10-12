@@ -7,7 +7,6 @@ import 'package:pokedex_flutter/models/pokedex_model.dart';
 
 class PokedexBloc {
   late ApiProvider _apiProvider;
-
   late StreamController<ApiResponse<PokedexModel>> _pokedexController;
 
   StreamSink<ApiResponse<PokedexModel>> get pokedexSink =>
@@ -20,7 +19,6 @@ class PokedexBloc {
       String queryType, String path, Function(PokedexModel data) setState) {
     _pokedexController = StreamController<ApiResponse<PokedexModel>>();
     _apiProvider = ApiProvider();
-    fetchPokedex(queryType, path, setState);
   }
 
   Future<void> fetchPokedex(
