@@ -8,6 +8,7 @@ import 'package:pokedex_flutter/models/pokedex_model.dart';
 import 'package:pokedex_flutter/models/pokemon_model.dart';
 import 'package:pokedex_flutter/presentation/pokedex/pokedex_bloc.dart';
 import 'package:pokedex_flutter/presentation/pokemon/pokemon_bloc.dart';
+import 'package:pokedex_flutter/presentation/widgets/custom_bar.dart';
 import 'package:pokedex_flutter/presentation/widgets/custom_modal.dart';
 import 'package:pokedex_flutter/presentation/widgets/list_item.dart';
 import 'package:pokedex_flutter/presentation/widgets/loader.dart';
@@ -61,8 +62,13 @@ class _PokedexScreenState extends State<PokedexScreen> {
               if (!snapshot.hasData || pokemon == null) {
                 return CustomModal(
                   modalSize: ModalSize.halfSize,
-                  widget: Loader(
-                    loadingMessage: '',
+                  widget: Column(
+                    children: [
+                      CustomBar(),
+                      Loader(
+                        loadingMessage: '',
+                      ),
+                    ],
                   ),
                 );
               }
