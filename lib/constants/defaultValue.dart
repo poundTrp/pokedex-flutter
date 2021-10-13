@@ -6,7 +6,7 @@ class AppColor {
   static const Color customBarColor = Colors.black54;
   static const Color textColor = Colors.black87;
   static const Color white = Colors.white;
-  static const Color indicatorColor = Colors.lightGreen;
+  static const Color indicatorColor = Colors.lightBlueAccent;
   static const Color errorColor = Colors.red;
   static const Color errorButtonColor = Colors.redAccent;
 }
@@ -24,6 +24,7 @@ class QueryType {
 class AppDefaultValue {
   static const String dataNotFound = 'Data not found';
   static const String loadingMessage = 'Fetching Items';
+  static const String retryMessage = 'Please Retry again';
 }
 
 class AppFontSize {

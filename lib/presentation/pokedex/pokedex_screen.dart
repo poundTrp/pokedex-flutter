@@ -9,6 +9,8 @@ import 'package:pokedex_flutter/models/pokemon_model.dart';
 import 'package:pokedex_flutter/presentation/pokedex/pokedex_bloc.dart';
 import 'package:pokedex_flutter/presentation/pokemon/pokemon_bloc.dart';
 import 'package:pokedex_flutter/presentation/widgets/list_item.dart';
+import 'package:pokedex_flutter/presentation/widgets/loader.dart';
+import 'package:pokedex_flutter/presentation/widgets/loader_error.dart';
 import 'package:pokedex_flutter/presentation/widgets/pokemon_detail.dart';
 
 class PokedexScreen extends StatefulWidget {
@@ -80,8 +82,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
           if (snapshot.hasData) {
             switch (snapshot.data!.status) {
               case Status.LOADING:
-                // TODO: Handle Loading
-                break;
+                return Loader(snapshot.data!.message);
               case Status.COMPLETED:
                 return ListView.builder(
                     controller: scrollController,
@@ -94,8 +95,10 @@ class _PokedexScreenState extends State<PokedexScreen> {
                       );
                     });
               case Status.ERROR:
-                //TODO: Handle Error
-                break;
+                return LoadingError(
+                  snapshot.data!.message,
+                  _onRefresh,
+                );
             }
           }
           return Center(
