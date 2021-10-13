@@ -5,7 +5,7 @@ import 'package:pokedex_flutter/constants/defaultValue.dart';
 class Loader extends StatelessWidget {
   final String loadingMessage;
 
-  Loader(this.loadingMessage);
+  Loader({required this.loadingMessage});
 
   @override
   Widget build(BuildContext context) {

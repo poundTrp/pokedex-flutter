@@ -5,7 +5,7 @@ class LoadingError extends StatelessWidget {
   final String errorMessage;
   final Function() onRetryPressed;
 
-  LoadingError(this.errorMessage, this.onRetryPressed);
+  LoadingError({required this.errorMessage, required this.onRetryPressed});
 
   @override
   Widget build(BuildContext context) {
