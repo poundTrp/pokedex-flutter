@@ -27,12 +27,23 @@ class _PokedexScreenState extends State<PokedexScreen> {
 
   void _lazyLoadHandler(PokedexModel data) {
     setState(() {
+      if (_queryType != QueryType.URL) {
+        _data = [];
+        _data = [..._data];
+      }
       _data = [..._data, ...data.results];
       _nextPage = data.next;
     });
   }
 
   Future<void> _onRefresh() {
+    setState(() {
+      _queryType = QueryType.POKEMON;
+    });
+    return _bloc.fetchPokedex(_queryType, Endpoint.POKEMON, _lazyLoadHandler);
+  }
+
+  Future<void> _onLoadMoreData() {
     return _bloc.fetchPokedex(_queryType, _nextPage, _lazyLoadHandler);
   }
 
@@ -73,6 +84,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 break;
               case Status.COMPLETED:
                 return ListView.builder(
+                    controller: scrollController,
                     itemCount: _data.length,
                     itemBuilder: (context, index) {
                       return ListItem(
@@ -113,8 +125,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
         setState(() {
           _queryType = QueryType.URL;
         });
-
-        _onRefresh();
+        _onLoadMoreData();
       }
     });
 
