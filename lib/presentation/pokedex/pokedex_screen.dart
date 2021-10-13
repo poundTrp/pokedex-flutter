@@ -54,25 +54,26 @@ class _PokedexScreenState extends State<PokedexScreen> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return CustomModal(
-          widget: FutureBuilder<PokemonModel>(
-              future: _pokemonBloc.fetchPokemon(url),
-              builder: (context, snapshot) {
-                final pokemon = snapshot.data;
-                if (!snapshot.hasData || pokemon == null) {
-                  return Loader(
+        return FutureBuilder<PokemonModel>(
+            future: _pokemonBloc.fetchPokemon(url),
+            builder: (context, snapshot) {
+              final pokemon = snapshot.data;
+              if (!snapshot.hasData || pokemon == null) {
+                return CustomModal(
+                  modalSize: ModalSize.halfSize,
+                  widget: Loader(
                     loadingMessage: '',
-                  );
-                }
-                return PokemonDetail(
-                  title: title,
-                  frontSprite: pokemon.sprites.frontDefault,
-                  backSprite: pokemon.sprites.backDefault,
-                  height: pokemon.height,
-                  weight: pokemon.weight,
+                  ),
                 );
-              }),
-        );
+              }
+              return PokemonDetail(
+                title: title,
+                frontSprite: pokemon.sprites.frontDefault,
+                backSprite: pokemon.sprites.backDefault,
+                height: pokemon.height,
+                weight: pokemon.weight,
+              );
+            });
       },
     );
   }
