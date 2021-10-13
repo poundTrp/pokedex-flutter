@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/constants/defaultValue.dart';
+import 'package:pokedex_flutter/presentation/widgets/custom_modal.dart';
 import 'package:pokedex_flutter/utils/textFormatter.dart';
 
 class PokemonDetail extends StatelessWidget {
@@ -93,38 +94,28 @@ class PokemonDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: Container(
-        decoration: new BoxDecoration(
-          color: Colors.white,
-          borderRadius: new BorderRadius.only(
-            topLeft: new Radius.circular(20.0),
-            topRight: new Radius.circular(20.0),
-          ),
-        ),
-        child: Column(
-          children: [
-            Column(
-              children: [
-                _customBar(context),
-                Text(
-                  capitalFirstLetter(title),
-                  style: TextStyle(
-                    fontSize: AppFontSize.title,
-                  ),
+    return CustomModal(
+      widget: Column(
+        children: [
+          Column(
+            children: [
+              _customBar(context),
+              Text(
+                capitalFirstLetter(title),
+                style: TextStyle(
+                  fontSize: AppFontSize.title,
                 ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _renderPicture(),
-                _renderHeightAndWeight(),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _renderPicture(),
+              _renderHeightAndWeight(),
+            ],
+          ),
+        ],
       ),
     );
   }

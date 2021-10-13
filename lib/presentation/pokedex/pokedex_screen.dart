@@ -8,6 +8,7 @@ import 'package:pokedex_flutter/models/pokedex_model.dart';
 import 'package:pokedex_flutter/models/pokemon_model.dart';
 import 'package:pokedex_flutter/presentation/pokedex/pokedex_bloc.dart';
 import 'package:pokedex_flutter/presentation/pokemon/pokemon_bloc.dart';
+import 'package:pokedex_flutter/presentation/widgets/custom_modal.dart';
 import 'package:pokedex_flutter/presentation/widgets/list_item.dart';
 import 'package:pokedex_flutter/presentation/widgets/loader.dart';
 import 'package:pokedex_flutter/presentation/widgets/loader_error.dart';
@@ -53,23 +54,25 @@ class _PokedexScreenState extends State<PokedexScreen> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return FutureBuilder<PokemonModel>(
-            future: _pokemonBloc.fetchPokemon(url),
-            builder: (context, snapshot) {
-              final pokemon = snapshot.data;
-              if (!snapshot.hasData || pokemon == null) {
-                return Center(
-                  child: Text(AppDefaultValue.dataNotFound),
+        return CustomModal(
+          widget: FutureBuilder<PokemonModel>(
+              future: _pokemonBloc.fetchPokemon(url),
+              builder: (context, snapshot) {
+                final pokemon = snapshot.data;
+                if (!snapshot.hasData || pokemon == null) {
+                  return Loader(
+                    loadingMessage: '',
+                  );
+                }
+                return PokemonDetail(
+                  title: title,
+                  frontSprite: pokemon.sprites.frontDefault,
+                  backSprite: pokemon.sprites.backDefault,
+                  height: pokemon.height,
+                  weight: pokemon.weight,
                 );
-              }
-              return PokemonDetail(
-                title: title,
-                frontSprite: pokemon.sprites.frontDefault,
-                backSprite: pokemon.sprites.backDefault,
-                height: pokemon.height,
-                weight: pokemon.weight,
-              );
-            });
+              }),
+        );
       },
     );
   }
@@ -82,7 +85,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
           if (snapshot.hasData) {
             switch (snapshot.data!.status) {
               case Status.LOADING:
-                return Loader(snapshot.data!.message);
+                return Loader(loadingMessage: snapshot.data!.message);
               case Status.COMPLETED:
                 return ListView.builder(
                     controller: scrollController,
@@ -96,8 +99,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     });
               case Status.ERROR:
                 return LoadingError(
-                  snapshot.data!.message,
-                  _onRefresh,
+                  errorMessage: snapshot.data!.message,
+                  onRetryPressed: _onRefresh,
                 );
             }
           }
