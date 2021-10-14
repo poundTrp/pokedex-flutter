@@ -30,6 +30,7 @@ dependencies:
   flutter_bloc: ^7.0.0
   dio: ^4.0.0
   json_serializable: ^4.1.4
+  golden_toolkit: ^0.9.0
 
 dev_dependencies:
   flutter_test:
