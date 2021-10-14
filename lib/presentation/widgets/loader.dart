@@ -22,6 +22,7 @@ class Loader extends StatelessWidget {
             height: 24,
           ),
           CircularProgressIndicator(
+            key: Key('LoadingAnimationKey'),
             valueColor: AlwaysStoppedAnimation<Color>(AppColor.indicatorColor),
           ),
         ],
